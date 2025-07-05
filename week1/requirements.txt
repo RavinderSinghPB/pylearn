@@ -1,0 +1,36 @@
+# Week 1 Dependencies
+# Core async HTTP library
+aiohttp>=3.8.0
+aiofiles>=23.0.0
+
+# HTTP requests for sync operations
+requests>=2.31.0
+
+# WebSocket support for real-time communication
+websockets>=12.0
+
+# Data processing and analysis
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Performance monitoring and profiling
+psutil>=5.9.0
+memory-profiler>=0.60.0
+
+# Data visualization for performance charts
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Progress bars and utilities
+tqdm>=4.65.0
+
+# Testing framework
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+
+# Beautiful output formatting
+rich>=13.0.0
+tabulate>=0.9.0
+
+# Time utilities
+python-dateutil>=2.8.0

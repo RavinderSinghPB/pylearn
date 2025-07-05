@@ -24,235 +24,494 @@ By the end of this course, you will:
 ---
 
 ## 📚 Course Structure (12 Weeks)
+*Organized by Concept Dependency Flow*
 
-### Module 1: Foundations & Theory (Week 1)
-**Theory: 60% | Practical: 40%**
+### Module 1: Quick Start - All Concepts Overview (Week 1)
+**Theory: 30% | Practical: 70%**
+
+#### 🎯 Quick Start Philosophy:
+Get hands-on experience with all three paradigms in one week to understand when to use each approach.
 
 #### Topics Covered:
 - Concurrency vs Parallelism vs Asynchronous Programming
-- Python GIL (Global Interpreter Lock) deep dive
-- When to use Threading vs Multiprocessing vs Asyncio
-- Performance implications and trade-offs
+- Python GIL impact and implications
+- Threading, Multiprocessing, and Asyncio - when to use what
+- Performance characteristics and trade-offs
 
-#### Lab 1: GIL Impact Analysis
-- **Lab 1.1**: Measure GIL impact on CPU-bound vs I/O-bound tasks
-- **Lab 1.2**: Benchmark different concurrency approaches
-- **Lab 1.3**: Profile memory and CPU usage patterns
+#### Lab 1: Comparative Implementation Lab
+Build the same application using all three approaches to see differences:
 
-```python
-# Example: Gil impact measurement
-import time
-import threading
-import multiprocessing
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-```
+- **Lab 1.1**: **URL Checker with Threading**
+  ```python
+  # Compare response times for 100 URLs using threading
+  import threading, requests, time
+  from concurrent.futures import ThreadPoolExecutor
+  ```
+
+- **Lab 1.2**: **URL Checker with Multiprocessing**
+  ```python
+  # Same task using multiprocessing
+  import multiprocessing, requests
+  from concurrent.futures import ProcessPoolExecutor
+  ```
+
+- **Lab 1.3**: **URL Checker with Asyncio**
+  ```python
+  # Same task using asyncio
+  import asyncio, aiohttp
+  ```
+
+- **Lab 1.4**: **Performance Comparison & GIL Analysis**
+  ```python
+  # Benchmark all three approaches
+  # CPU-bound vs I/O-bound task analysis
+  # Memory usage comparison
+  ```
+
+- **Lab 1.5**: **Quick Decision Framework**
+  ```python
+  # Build a simple decision tree function
+  def choose_concurrency_model(task_type, cpu_bound, io_bound, scalability_needs):
+      # Returns recommended approach with reasoning
+  ```
+
+**Deliverable**: Comparative analysis report with working code for all three paradigms
 
 ---
 
 ### Module 2: Threading Fundamentals (Week 2)
 **Theory: 20% | Practical: 80%**
+*Prerequisite: Module 1 overview*
 
 #### Topics Covered:
-- Thread creation and management
-- Thread synchronization primitives
-- Race conditions and deadlocks
-- Thread-safe data structures
+- Thread lifecycle and management
+- Synchronization primitives (Lock, RLock, Semaphore)
+- Race conditions and deadlock prevention
+- Thread-safe data structures and patterns
 
-#### Lab 2: Thread Management & Synchronization
-- **Lab 2.1**: Build a thread-safe counter with Lock/RLock
-- **Lab 2.2**: Implement producer-consumer pattern with Queue
-- **Lab 2.3**: Create a thread pool for web scraping
-- **Lab 2.4**: Solve dining philosophers problem
+#### Lab 2: Threading Mastery
+- **Lab 2.1**: **Thread-Safe Counter & Bank Account**
+  ```python
+  # Implement thread-safe operations with proper locking
+  class ThreadSafeCounter:
+      def __init__(self):
+          self._lock = threading.Lock()
+          self._value = 0
+  ```
 
-**Deliverable**: Multi-threaded web scraper with rate limiting
+- **Lab 2.2**: **Producer-Consumer with Queue**
+  ```python
+  # Classic producer-consumer pattern
+  import queue, threading, time
+  ```
+
+- **Lab 2.3**: **Web Scraper with Thread Pool**
+  ```python
+  # Practical threading application
+  from concurrent.futures import ThreadPoolExecutor
+  import requests, bs4
+  ```
+
+- **Lab 2.4**: **Dining Philosophers Problem**
+  ```python
+  # Solve classic deadlock scenario
+  # Implement deadlock prevention strategies
+  ```
+
+**Deliverable**: Multi-threaded web scraper with rate limiting and proper synchronization
 
 ---
 
 ### Module 3: Advanced Threading Patterns (Week 3)
-**Theory: 25% | Practical: 75%**
+**Theory: 20% | Practical: 80%**
+*Prerequisite: Module 2 - Threading Fundamentals*
 
 #### Topics Covered:
 - Condition variables and Events
-- Semaphores and Barriers
+- Barriers and advanced synchronization
 - Thread-local storage
-- Custom thread pools
+- Custom thread pools and worker patterns
 
-#### Lab 3: Advanced Thread Synchronization
-- **Lab 3.1**: Implement a connection pool using Semaphore
-- **Lab 3.2**: Build a pub-sub system with Condition variables
-- **Lab 3.3**: Create a thread-safe cache with TTL
-- **Lab 3.4**: Implement a worker queue with priority
+#### Lab 3: Advanced Synchronization
+- **Lab 3.1**: **Connection Pool with Semaphore**
+  ```python
+  # Database connection pool implementation
+  class ConnectionPool:
+      def __init__(self, max_connections=10):
+          self._semaphore = threading.Semaphore(max_connections)
+  ```
 
-**Deliverable**: Multi-threaded chat server with rooms
+- **Lab 3.2**: **Pub-Sub System with Condition Variables**
+  ```python
+  # Event-driven messaging system
+  import threading, queue
+  ```
+
+- **Lab 3.3**: **Thread-Safe Cache with TTL**
+  ```python
+  # Time-based cache invalidation
+  import threading, time, weakref
+  ```
+
+- **Lab 3.4**: **Priority Worker Queue**
+  ```python
+  # Custom priority-based task execution
+  import heapq, threading
+  ```
+
+**Deliverable**: Multi-threaded chat server with rooms and message broadcasting
 
 ---
 
-### Module 4: Multiprocessing Deep Dive (Week 4)
+### Module 4: Multiprocessing Fundamentals (Week 4)
 **Theory: 20% | Practical: 80%**
+*Prerequisite: Module 2-3 - Threading mastery*
 
 #### Topics Covered:
-- Process creation and management
-- Inter-process communication (IPC)
-- Shared memory and synchronization
-- Process pools and parallel execution
+- Process creation and lifecycle
+- Inter-process communication (Pipes, Queues, Shared Memory)
+- Process synchronization primitives
+- Process pools and parallel execution patterns
 
 #### Lab 4: Parallel Processing
-- **Lab 4.1**: Parallel data processing with Process Pool
-- **Lab 4.2**: Implement map-reduce with multiprocessing
-- **Lab 4.3**: Build a distributed task queue
-- **Lab 4.4**: Create parallel image processing pipeline
+- **Lab 4.1**: **CPU-Bound Task Parallelization**
+  ```python
+  # Prime number calculation, image processing
+  import multiprocessing as mp
+  from concurrent.futures import ProcessPoolExecutor
+  ```
 
-**Deliverable**: Distributed log analyzer processing large files
+- **Lab 4.2**: **Map-Reduce Implementation**
+  ```python
+  # Distribute large dataset processing
+  def map_reduce(data, map_func, reduce_func, num_processes=4):
+  ```
+
+- **Lab 4.3**: **Shared Memory Data Processing**
+  ```python
+  # Use shared memory for large datasets
+  from multiprocessing import shared_memory
+  ```
+
+- **Lab 4.4**: **IPC Communication Patterns**
+  ```python
+  # Pipes, Queues, and Manager objects
+  import multiprocessing as mp
+  ```
+
+**Deliverable**: Distributed log analyzer processing large files in parallel
 
 ---
 
-### Module 5: Async Programming Fundamentals (Week 5)
-**Theory: 30% | Practical: 70%**
+### Module 5: Asyncio Fundamentals (Week 5)
+**Theory: 25% | Practical: 75%**
+*Prerequisite: Understanding of I/O-bound vs CPU-bound (Module 1)*
 
 #### Topics Covered:
 - Event loops and coroutines
-- async/await syntax
-- asyncio primitives (Tasks, Futures)
+- async/await syntax and patterns
+- Tasks, Futures, and coroutine management
 - Async generators and iterators
 
-#### Lab 5: Asyncio Basics
-- **Lab 5.1**: Build async HTTP client with aiohttp
-- **Lab 5.2**: Implement async file I/O operations
-- **Lab 5.3**: Create async producer-consumer pattern
-- **Lab 5.4**: Build async web scraper with rate limiting
+#### Lab 5: Asyncio Mastery
+- **Lab 5.1**: **Async HTTP Client**
+  ```python
+  # Build async HTTP client with aiohttp
+  import asyncio, aiohttp
+  async def fetch_url(session, url):
+  ```
 
-**Deliverable**: Async API client with retry logic and circuit breaker
+- **Lab 5.2**: **Async File I/O Operations**
+  ```python
+  # Async file reading/writing
+  import asyncio, aiofiles
+  ```
+
+- **Lab 5.3**: **Async Producer-Consumer**
+  ```python
+  # Asyncio Queue-based patterns
+  import asyncio
+  ```
+
+- **Lab 5.4**: **Async Web Scraper with Rate Limiting**
+  ```python
+  # Combine asyncio with rate limiting
+  import asyncio, aiohttp, time
+  ```
+
+**Deliverable**: Async API client with retry logic, circuit breaker, and comprehensive error handling
 
 ---
 
 ### Module 6: Advanced Asyncio Patterns (Week 6)
-**Theory: 25% | Practical: 75%**
+**Theory: 20% | Practical: 80%**
+*Prerequisite: Module 5 - Asyncio Fundamentals*
 
 #### Topics Covered:
-- Async context managers
+- Async context managers and resource management
 - Async synchronization primitives
-- Error handling in async code
-- Async testing strategies
+- Error handling and exception propagation
+- Async testing strategies and frameworks
 
 #### Lab 6: Production Async Patterns
-- **Lab 6.1**: Implement async database connection pool
-- **Lab 6.2**: Build async queue with backpressure
-- **Lab 6.3**: Create async middleware pipeline
-- **Lab 6.4**: Implement async observer pattern
+- **Lab 6.1**: **Async Database Connection Pool**
+  ```python
+  # Implement async connection pooling
+  import asyncio, asyncpg
+  ```
 
-**Deliverable**: Async microservice with health checks and metrics
+- **Lab 6.2**: **Async Queue with Backpressure**
+  ```python
+  # Handle high-throughput scenarios
+  import asyncio
+  ```
+
+- **Lab 6.3**: **Async Middleware Pipeline**
+  ```python
+  # Request/response processing pipeline
+  import asyncio
+  ```
+
+- **Lab 6.4**: **Async Observer Pattern**
+  ```python
+  # Event-driven async architecture
+  import asyncio, weakref
+  ```
+
+**Deliverable**: Async microservice with health checks, metrics, and graceful shutdown
 
 ---
 
 ### Module 7: Async Web Development (Week 7)
-**Theory: 20% | Practical: 80%**
+**Theory: 15% | Practical: 85%**
+*Prerequisite: Module 5-6 - Asyncio mastery*
 
 #### Topics Covered:
-- FastAPI deep dive
-- WebSocket handling
-- Async database operations
-- Streaming responses
+- FastAPI deep dive and async web frameworks
+- WebSocket handling and real-time communication
+- Async database operations and ORMs
+- Streaming responses and file handling
 
 #### Lab 7: Async Web Applications
-- **Lab 7.1**: Build REST API with FastAPI and async DB
-- **Lab 7.2**: Implement WebSocket chat application
-- **Lab 7.3**: Create streaming data API
-- **Lab 7.4**: Build async file upload service
+- **Lab 7.1**: **FastAPI REST API with Async DB**
+  ```python
+  # Full async web service
+  from fastapi import FastAPI
+  import asyncpg, asyncio
+  ```
 
-**Deliverable**: Real-time dashboard with WebSocket updates
+- **Lab 7.2**: **WebSocket Chat Application**
+  ```python
+  # Real-time bidirectional communication
+  from fastapi import WebSocket
+  ```
+
+- **Lab 7.3**: **Streaming Data API**
+  ```python
+  # Server-sent events and streaming
+  from fastapi.responses import StreamingResponse
+  ```
+
+- **Lab 7.4**: **Async File Upload Service**
+  ```python
+  # Handle large file uploads asynchronously
+  import aiofiles, asyncio
+  ```
+
+**Deliverable**: Real-time dashboard with WebSocket updates and async data processing
 
 ---
 
-### Module 8: Performance & Optimization (Week 8)
-**Theory: 40% | Practical: 60%**
+### Module 8: Performance Optimization & Profiling (Week 8)
+**Theory: 30% | Practical: 70%**
+*Prerequisite: All previous modules - applies to all paradigms*
 
 #### Topics Covered:
 - Profiling concurrent applications
 - Memory management in concurrent code
-- Optimization strategies
-- Bottleneck identification
+- Bottleneck identification and resolution
+- Performance testing and benchmarking
 
-#### Lab 8: Performance Optimization
-- **Lab 8.1**: Profile and optimize threading application
-- **Lab 8.2**: Memory leak detection in async code
-- **Lab 8.3**: Benchmark different concurrency models
-- **Lab 8.4**: Optimize database connection pooling
+#### Lab 8: Performance Mastery
+- **Lab 8.1**: **Threading Performance Analysis**
+  ```python
+  # Profile and optimize threading applications
+  import cProfile, threading, line_profiler
+  ```
 
-**Deliverable**: Performance optimization report with before/after metrics
+- **Lab 8.2**: **Async Memory Leak Detection**
+  ```python
+  # Memory profiling for async applications
+  import asyncio, tracemalloc, psutil
+  ```
+
+- **Lab 8.3**: **Comparative Benchmarking**
+  ```python
+  # Benchmark threading vs multiprocessing vs asyncio
+  import timeit, memory_profiler
+  ```
+
+- **Lab 8.4**: **Database Connection Pool Optimization**
+  ```python
+  # Optimize connection pools for different workloads
+  import asyncpg, psycopg2.pool
+  ```
+
+**Deliverable**: Performance optimization report with before/after metrics and recommendations
 
 ---
 
 ### Module 9: Error Handling & Debugging (Week 9)
-**Theory: 30% | Practical: 70%**
+**Theory: 25% | Practical: 75%**
+*Prerequisite: Understanding of all paradigms*
 
 #### Topics Covered:
 - Exception handling in concurrent code
 - Debugging strategies and tools
-- Logging in multi-threaded applications
-- Graceful shutdown patterns
+- Logging in multi-threaded/async applications
+- Graceful shutdown and cleanup patterns
 
 #### Lab 9: Robust Concurrent Systems
-- **Lab 9.1**: Implement comprehensive error handling
-- **Lab 9.2**: Build distributed logging system
-- **Lab 9.3**: Create health check and monitoring
-- **Lab 9.4**: Implement graceful shutdown
+- **Lab 9.1**: **Comprehensive Error Handling**
+  ```python
+  # Error handling across all paradigms
+  import asyncio, threading, multiprocessing
+  ```
 
-**Deliverable**: Production-ready async service with monitoring
+- **Lab 9.2**: **Distributed Logging System**
+  ```python
+  # Centralized logging for concurrent applications
+  import logging, asyncio, threading
+  ```
+
+- **Lab 9.3**: **Health Checks and Monitoring**
+  ```python
+  # Health check endpoints and metrics
+  import asyncio, prometheus_client
+  ```
+
+- **Lab 9.4**: **Graceful Shutdown Implementation**
+  ```python
+  # Proper cleanup and shutdown procedures
+  import signal, asyncio, threading
+  ```
+
+**Deliverable**: Production-ready async service with comprehensive monitoring and error handling
 
 ---
 
-### Module 10: Advanced Patterns & Libraries (Week 10)
-**Theory: 25% | Practical: 75%**
+### Module 10: Advanced Libraries & Frameworks (Week 10)
+**Theory: 20% | Practical: 80%**
+*Prerequisite: Solid understanding of all core concepts*
 
 #### Topics Covered:
-- Celery for distributed tasks
+- Celery for distributed task processing
 - RQ (Redis Queue) for job queues
-- Asyncio third-party libraries
-- Concurrent.futures advanced usage
+- Advanced asyncio libraries (aiostream, aioredis)
+- Concurrent.futures advanced patterns
 
-#### Lab 10: Third-Party Tools
-- **Lab 10.1**: Build distributed task system with Celery
-- **Lab 10.2**: Implement job queue with RQ
-- **Lab 10.3**: Create async pipeline with aiostream
-- **Lab 10.4**: Build concurrent data processing with Dask
+#### Lab 10: Third-Party Tools Integration
+- **Lab 10.1**: **Celery Distributed Task System**
+  ```python
+  # Build scalable task processing
+  from celery import Celery
+  ```
 
-**Deliverable**: Distributed image processing system
+- **Lab 10.2**: **RQ Job Queue Implementation**
+  ```python
+  # Redis-based job processing
+  from rq import Queue, Worker
+  ```
+
+- **Lab 10.3**: **Async Pipeline with aiostream**
+  ```python
+  # Stream processing pipelines
+  import aiostream, asyncio
+  ```
+
+- **Lab 10.4**: **Concurrent Data Processing with Dask**
+  ```python
+  # Large-scale data processing
+  import dask, dask.bag
+  ```
+
+**Deliverable**: Distributed image processing system with multiple processing backends
 
 ---
 
-### Module 11: Real-World Applications (Week 11)
-**Theory: 15% | Practical: 85%**
+### Module 11: System Design & Architecture (Week 11)
+**Theory: 20% | Practical: 80%**
+*Prerequisite: All previous modules*
 
 #### Topics Covered:
-- Designing concurrent systems
-- Architecture patterns
-- Load balancing and scaling
-- Monitoring and observability
+- Designing concurrent systems architecture
+- Load balancing and scaling strategies
+- Message queues and event-driven architecture
+- Monitoring and observability patterns
 
-#### Lab 11: System Design Implementation
-- **Lab 11.1**: Build async load balancer
-- **Lab 11.2**: Implement distributed cache system
-- **Lab 11.3**: Create async message broker
-- **Lab 11.4**: Build concurrent rate limiter
+#### Lab 11: System Architecture Implementation
+- **Lab 11.1**: **Async Load Balancer**
+  ```python
+  # Implement load balancing strategies
+  import asyncio, aiohttp, random
+  ```
 
-**Deliverable**: Async microservices architecture
+- **Lab 11.2**: **Distributed Cache System**
+  ```python
+  # Multi-node caching system
+  import asyncio, aioredis
+  ```
+
+- **Lab 11.3**: **Message Broker Implementation**
+  ```python
+  # Pub-sub message broker
+  import asyncio, websockets
+  ```
+
+- **Lab 11.4**: **Concurrent Rate Limiter**
+  ```python
+  # Distributed rate limiting
+  import asyncio, aioredis, time
+  ```
+
+**Deliverable**: Complete async microservices architecture with inter-service communication
 
 ---
 
-### Module 12: Final Project & Advanced Topics (Week 12)
+### Module 12: Final Project & Production Deployment (Week 12)
 **Theory: 10% | Practical: 90%**
+*Capstone: Apply all learned concepts*
 
 #### Topics Covered:
-- Code review and best practices
 - Production deployment strategies
-- Monitoring and alerting
-- Future of Python concurrency
+- Monitoring and alerting systems
+- Performance tuning and optimization
+- Code review and best practices
 
 #### Final Project Options:
-1. **Async Stock Trading System**: Real-time data processing with WebSocket feeds
-2. **Distributed Web Crawler**: Scalable web scraping with async processing
-3. **Real-time Analytics Platform**: Stream processing with async data pipelines
-4. **Concurrent Game Server**: Multi-player game with async networking
+Choose one comprehensive project that demonstrates mastery:
+
+1. **High-Frequency Trading System**
+   - Real-time data processing with WebSocket feeds
+   - Async order processing and risk management
+   - Performance-critical concurrent operations
+
+2. **Distributed Web Crawler & Search Engine**
+   - Scalable web scraping with async processing
+   - Distributed indexing and search capabilities
+   - Rate limiting and politeness policies
+
+3. **Real-time Analytics Platform**
+   - Stream processing with async data pipelines
+   - WebSocket-based dashboard updates
+   - Concurrent data aggregation and analysis
+
+4. **Multiplayer Game Server**
+   - Async networking for multiple concurrent players
+   - Real-time state synchronization
+   - Scalable room-based architecture
+
+**Deliverable**: Complete production-ready system with documentation, tests, and deployment guide
 
 ---
 
