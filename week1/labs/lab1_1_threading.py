@@ -301,25 +301,36 @@ def demonstrate_threading_concepts():
     # 2. Thread synchronization with Lock
     console.print("\n2. Thread Synchronization with Lock:")
 
-    shared_counter = 0
-    counter_lock = threading.Lock()
+    # Use a class to encapsulate shared state
+    class SharedCounter:
+        def __init__(self):
+            self.value = 0
+            self.lock = threading.Lock()
 
-    def increment_counter(name: str):
-        global shared_counter
+        def increment(self):
+            with self.lock:
+                self.value += 1
+
+        def get_value(self):
+            with self.lock:
+                return self.value
+
+    shared_counter = SharedCounter()
+
+    def increment_counter(name: str, counter: SharedCounter):
         for _ in range(1000):
-            with counter_lock:
-                shared_counter += 1
+            counter.increment()
 
     threads = []
     for i in range(5):
-        t = threading.Thread(target=increment_counter, args=(f"Thread-{i}",))
+        t = threading.Thread(target=increment_counter, args=(f"Thread-{i}", shared_counter))
         threads.append(t)
         t.start()
 
     for t in threads:
         t.join()
 
-    console.print(f"Final counter value: {shared_counter} (expected: 5000)")
+    console.print(f"Final counter value: {shared_counter.get_value()} (expected: 5000)")
 
     # 3. Thread-local storage
     console.print("\n3. Thread-Local Storage:")
